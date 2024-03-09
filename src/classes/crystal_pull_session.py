@@ -10,7 +10,7 @@ class CrystalPullSession:
     """
     Class representing a pull session.
     """
-    def __init__(self, stamp_cards_list, num_featured_weapons, non_featured_five_star_percent_rate, starting_weapon_parts=0, target_weapon_type):
+    def __init__(self, stamp_cards_list, num_featured_weapons, non_featured_five_star_percent_rate, target_weapon_type, starting_weapon_parts=0):
 
         self.target_weapon_type = target_weapon_type  # In a future refactor, this will be removed, as it will collect data on both types.
 
