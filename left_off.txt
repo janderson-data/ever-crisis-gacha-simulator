@@ -1,5 +1,12 @@
 You left off...
 
-Just finished fixing `determine_pull_results()`, and you THINK you've added functionality for two featured weapons.
+You're working on `test_ten_draw.py`. You decided that you'd just write the tests
+and figure out all of the exact integration processes later. For now, you're making
+a class that inherits from TenDraw (`TestTenDraw`), and you're writing four methods
+that will test 2 (guaranteed 4* or not) x 2 (one or two featured weapons).
 
-Honestly... fix the import statements in `crystal_pull_session` and then try running `criterion_target_overboost`.
+Other Info / Questions:
+  -- You'll need to adapt CrystalPullSession.generate_target_probabilities() to create
+     the target probabilities for your test. How can this be done in such a way that,
+     if the original function is edited, you don't need to go change the test function?
+  -- How can you incorporate fixtures? (might be relevant for previous question)
