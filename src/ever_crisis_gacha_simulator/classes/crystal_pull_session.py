@@ -127,6 +127,8 @@ class CrystalPullSession:
                 if pull_session_outcome.startswith(pull_result_string):
                     self.data[pull_session_outcome] += 1
 
+        self.rules_for_next_ten_draw = []
+
     def generate_target_probabilities(num_featured_weapons, target_weapon_type, non_featured_five_star_percent_rate):
 
         """
