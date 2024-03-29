@@ -3,7 +3,6 @@ gacha_sim_venv/*
 .pytest_cache*
 *.ipynb
 left_off.txt
-*/__pycache__
 tests/unit_tests/__pycache__/*
 
 
