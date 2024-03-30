@@ -19,8 +19,12 @@ def test_crystal_pull_session():
     banner_info = ZACK_SEPHIROTH_LIMIT_BREAK_BANNER  # Any tests should be written with this banner in mind
     target_weapon_type = "featured"
     starting_weapon_parts = 0
+    session_criterion = "crystals_spent"
+    criterion_value = 90_000
 
     return CrystalPullSession(
+        session_criterion=session_criterion,
+        criterion_value=criterion_value,
         banner_info=banner_info,
         target_weapon_type=target_weapon_type,
         starting_weapon_parts=starting_weapon_parts
