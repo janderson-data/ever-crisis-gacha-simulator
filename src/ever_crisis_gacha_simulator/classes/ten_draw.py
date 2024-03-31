@@ -65,6 +65,17 @@ class TenDraw:
             )
 
             return self.determine_pull_result(random_float)
+
+        elif not desired and self.target_weapon_type == "featured":
+
+            # Float should be in the range to produced a nontargeted_featured_five_star
+            random_float = np.random.default_rng().uniform(
+                self.target_weapon_rates_dict["five_star"],
+                Decimal("2.0") * self.target_weapon_rates_dict["five_star"],
+            )
+
+            return self.determine_pull_result(random_float)
+
         else:
             # For now, this will make sure a 5* weapon gets logged.
             # Will change this once I allow the code to log featured and wishlisted simultaneously.

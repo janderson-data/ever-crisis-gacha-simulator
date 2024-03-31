@@ -33,7 +33,7 @@ class CrystalPullSession:
         if session_criterion not in ["overboost", "crystals_spent", "stamps_earned"]:
             raise ValueError(
                 "`session_criterion` must be a str of either 'overboost', 'crystals_spent', or 'stamps_earned'. Provided: ",
-                session_criterion
+                session_criterion,
             )
 
         self.session_criterion = session_criterion
@@ -44,13 +44,17 @@ class CrystalPullSession:
         self.target_weapon_rates_dict = generate_target_probabilities(
             num_featured_weapons=self.num_featured_weapons,
             target_weapon_type=self.target_weapon_type,
-            non_featured_five_star_percent_rate=banner_info["metadata"]["non_featured_five_star_percent_rate"],
+            non_featured_five_star_percent_rate=banner_info["metadata"][
+                "non_featured_five_star_percent_rate"
+            ],
         )
 
         self.current_stamp_card_index = 0
         self.stamp_cards_list = banner_info["stamp_cards_list"]
         self.current_stamp_card = StampCard(
-            self.stamp_cards_list[list(self.stamp_cards_list.keys())[self.current_stamp_card_index]]
+            self.stamp_cards_list[
+                list(self.stamp_cards_list.keys())[self.current_stamp_card_index]
+            ]
         )
 
         self.completed_stamp_cards = []
@@ -69,13 +73,6 @@ class CrystalPullSession:
             "nontargeted_five_stars_drawn": 0,
             "nontargeted_four_stars_drawn": 0,
             "nontargeted_three_stars_drawn": 0,
-            "metadata": {
-                "session_criterion": self.session_criterion,
-                "criterion_value": self.criterion_value,
-                "banner_info": banner_info,
-                "target_weapon_rate_info": self.target_weapon_rates_dict,
-                "starting_weapon_parts": starting_weapon_parts,
-            },
         }
 
     def criterion_overboost(self, overboost_target):
@@ -98,7 +95,9 @@ class CrystalPullSession:
         spending the indicated amount of crystals.
         """
 
-        while (num_crystals_to_spend - self.data["num_crystals_spent"]) >= TEN_DRAW_CRYSTAL_COST:
+        while (
+            num_crystals_to_spend - self.data["num_crystals_spent"]
+        ) >= TEN_DRAW_CRYSTAL_COST:
             self.pre_draw_stamp_card_operations()
             self.perform_ten_draw()
 
@@ -153,10 +152,14 @@ class CrystalPullSession:
 
         # Continuously re-use the final (EX) card once all other cards are completed
         if self.current_stamp_card_index >= len(self.stamp_cards_list):
-            self.current_stamp_card = StampCard(self.stamp_cards_list[list(self.stamp_cards_list.keys())[-1]])
+            self.current_stamp_card = StampCard(
+                self.stamp_cards_list[list(self.stamp_cards_list.keys())[-1]]
+            )
         else:
             self.current_stamp_card = StampCard(
-                self.stamp_cards_list[list(self.stamp_cards_list.keys())[self.current_stamp_card_index]]
+                self.stamp_cards_list[
+                    list(self.stamp_cards_list.keys())[self.current_stamp_card_index]
+                ]
             )
 
     def pre_draw_stamp_card_operations(self, predetermined_stamp_value=None):
@@ -165,7 +168,11 @@ class CrystalPullSession:
         determine if any stamp card rules need to go into the subsequent ten draw.
         """
 
-        ten_draw_stamp_value = predetermined_stamp_value if predetermined_stamp_value else self.determine_stamp_value_for_ten_draw()
+        ten_draw_stamp_value = (
+            predetermined_stamp_value
+            if predetermined_stamp_value
+            else self.determine_stamp_value_for_ten_draw()
+        )
 
         self.data["total_stamps_earned"] += ten_draw_stamp_value
 
@@ -228,15 +235,24 @@ class CrystalPullSession:
         """
         if self.session_criterion == "overboost":
             if self.criterion_value > 10 or self.criterion_value < 0:
-                raise ValueError("Simulations of criterion 'overboost' only support overboost levels between 0 (OB0) and 10 (OB10).\nEntered: ", self.criterion_value)
+                raise ValueError(
+                    "Simulations of criterion 'overboost' only support overboost levels between 0 (OB0) and 10 (OB10).\nEntered: ",
+                    self.criterion_value,
+                )
             self.criterion_overboost(overboost_target=self.criterion_value)
         elif self.session_criterion == "crystals_spent":
             if self.criterion_value < TEN_DRAW_CRYSTAL_COST:
-                raise ValueError("Simulations of criterion 'crystals_spent' require at least 3,000 crystals as input. Provided: ", self.criterion_value)
+                raise ValueError(
+                    "Simulations of criterion 'crystals_spent' require at least 3,000 crystals as input. Provided: ",
+                    self.criterion_value,
+                )
             self.criterion_crystals_spent(num_crystals_to_spend=self.criterion_value)
         elif self.session_criterion == "stamps_earned":
             if self.criterion_value < 0:
-                raise ValueError("Simulations of criterion 'stamps_earned' require a positive value. Provided: ", self.criterion_value)
+                raise ValueError(
+                    "Simulations of criterion 'stamps_earned' require a positive value. Provided: ",
+                    self.criterion_value,
+                )
             self.criterion_stamps_earned(num_stamps_to_earn=self.criterion_value)
 
 
