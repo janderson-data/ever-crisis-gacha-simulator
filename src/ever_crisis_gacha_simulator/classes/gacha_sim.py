@@ -139,6 +139,42 @@ class GachaSim:
 
         self.sim_results = pd.DataFrame(Parallel(n_jobs=n_jobs)(delayed(GachaSim.return_pull_session_data_dict)(**kwargs) for _ in tqdm(range(self.metadata["num_simulations"]))))
 
+    def generate_title_string(self, outcome):
+        NUM_STAMPS_IN_A_STAMP_CARD = 12
+
+        # Input checks are already done within `visualize_results`, which is where this function will be used.
+
+
+        if self.metadata["session_criterion"] == "stamps_earned":
+            # Special handling for proper grammar in title
+            if self.metadata["criterion_value"] >= NUM_STAMPS_IN_A_STAMP_CARD and self.metadata["criterion_value"] % NUM_STAMPS_IN_A_STAMP_CARD == 0:
+                NUM_STAMP_CARDS = self.metadata["criterion_value"] / NUM_STAMPS_IN_A_STAMP_CARD
+                if NUM_STAMP_CARDS > 1:
+                    if outcome == "num_crystals_spent":
+                        return f"Crystals Spent to Complete {NUM_STAMP_CARDS} Stamp Cards"
+                    elif outcome == "targeted_weapon_parts":
+                        return f"Targeted Weapon Parts after Completing {NUM_STAMP_CARDS} Stamp Cards"
+                else:
+                    if outcome == "num_crystals_spent":
+                        return f"Crystals Spent to Complete {NUM_STAMP_CARDS} Stamp Card"
+                    elif outcome == "targeted_weapon_parts":
+                        return f"Targeted Weapon Parts after Completing {NUM_STAMP_CARDS} Stamp Card"
+            else:
+                if outcome == "num_crystals_spent":
+                    return f"Crystals Spent to Earn {self.metadata['criterion_value']} Stamps"
+                elif outcome == "targeted_weapon_parts":
+                    return f"Targeted Weapon Parts after Earning {self.metadata['criterion_value']} Stamps"
+        elif self.metadata["session_criterion"] == "overboost":
+            if outcome == "num_crystals_spent":
+                return f"Crystals Spent to Reach Overboost {self.metadata['criterion_value']}"
+            elif outcome == "total_stamps_earned":
+                return f"Stamps Earned while Reaching Overboost {self.metadata['criterion_value']}"
+        elif self.metadata["session_criterion"] == "crystals_spent":
+            if outcome == "targeted_weapon_parts":
+                return f"Weapon Parts Earned after {self.metadata['criterion_value']} Crystals Spent"
+            elif outcome == "total_stamps_earned":
+                return f"Stamps Earned after {self.metadata['criterion_value']} Crystals Spent"
+
     def visualize_results(self, outcome):
         # Ensure user has already generated sim results
         if self.sim_results is None:
@@ -163,11 +199,7 @@ class GachaSim:
                 print("You've set your outcome to your session criterion, which is constant. Use a different outcome.")
                 return
 
-        # Programmatically generate title and subtitle
-        if self.metadata["session_criterion"] == "overboost":
-            TITLE_STRING = f"FF7 Ever Crisis: Pulling Until Overboost {self.metadata['criterion_value']} is Achieved"
-        else:
-            TITLE_STRING = f"FF7 Ever Crisis: Pulling Until {self.metadata['criterion_value']:,} {self.metadata['session_criterion'].replace('_', ' ').title()}"
+        TITLE_STRING = self.generate_title_string(outcome=outcome)
 
         SUBTITLE_STRING = f"Results from {self.metadata['num_simulations']:,} Simulated Sessions"
 
@@ -195,6 +227,6 @@ class GachaSim:
 
         plot.ax.set_title(f"{FULL_SET_TITLE_STRING}")
         plot.ax.set_xlabel(f"{X_AXIS_LABEL_MAPPING[outcome]}")
-        plot.ax.set_ylabel("Outcome Probability (%)")
+        plot.ax.set_ylabel("Probability (%)")
 
         return plot
