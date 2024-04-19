@@ -148,7 +148,7 @@ class GachaSim:
         if self.metadata["session_criterion"] == "stamps_earned":
             # Special handling for proper grammar in title
             if self.metadata["criterion_value"] >= NUM_STAMPS_IN_A_STAMP_CARD and self.metadata["criterion_value"] % NUM_STAMPS_IN_A_STAMP_CARD == 0:
-                NUM_STAMP_CARDS = self.metadata["criterion_value"] / NUM_STAMPS_IN_A_STAMP_CARD
+                NUM_STAMP_CARDS = int(self.metadata["criterion_value"] / NUM_STAMPS_IN_A_STAMP_CARD)
                 if NUM_STAMP_CARDS > 1:
                     if outcome == "num_crystals_spent":
                         return f"Crystals Spent to Complete {NUM_STAMP_CARDS} Stamp Cards"
@@ -171,11 +171,11 @@ class GachaSim:
                 return f"Stamps Earned while Reaching Overboost {self.metadata['criterion_value']}"
         elif self.metadata["session_criterion"] == "crystals_spent":
             if outcome == "targeted_weapon_parts":
-                return f"Weapon Parts Earned after {self.metadata['criterion_value']} Crystals Spent"
+                return f"Weapon Parts Earned after Spending {self.metadata['criterion_value']} Crystals"
             elif outcome == "total_stamps_earned":
-                return f"Stamps Earned after {self.metadata['criterion_value']} Crystals Spent"
+                return f"Stamps Earned after Spending {self.metadata['criterion_value']} Crystals"
 
-    def visualize_results(self, outcome):
+    def visualize_results(self, outcome, font_size=12):
         # Ensure user has already generated sim results
         if self.sim_results is None:
             print("You need to run a simulation (use the `run_sims` method) before you can visualize the results.")
@@ -185,7 +185,8 @@ class GachaSim:
         ACCEPTABLE_OUTCOMES = ["targeted_weapon_parts", "num_crystals_spent", "total_stamps_earned"]
 
         if outcome not in ACCEPTABLE_OUTCOMES:
-            print("Only acceptable outcomes for this function are `targeted_weapon_parts`, `num_crystals_spent`, and `total_stamps_earned`.")
+            print("ERROR: Only acceptable outcomes for this function are `targeted_weapon_parts`, `num_crystals_spent`, and `total_stamps_earned`.")
+            return
 
         # Make sure user isn't visualizing the session criterion by mistake.
         BAD_VIZ_DICT = {
@@ -220,13 +221,27 @@ class GachaSim:
         plot = sns.displot(
             data=self.sim_results,
             x=outcome,
+            color="cyan",
             kind="ecdf",
+            linewidth=2,
             stat="percent",
             complementary=True if outcome in ["targeted_weapon_parts", "stamps_earned"] else False,
         )
 
-        plot.ax.set_title(f"{FULL_SET_TITLE_STRING}")
-        plot.ax.set_xlabel(f"{X_AXIS_LABEL_MAPPING[outcome]}")
-        plot.ax.set_ylabel("Probability (%)")
+        plot.ax.set_title(f"{FULL_SET_TITLE_STRING}", fontsize=font_size, fontweight='semibold')
+        plot.ax.set_xlabel(f"{X_AXIS_LABEL_MAPPING[outcome]}", fontsize=font_size, fontweight='semibold')
+        plot.ax.set_ylabel("Probability (%)", fontsize=font_size, fontweight='semibold')
 
         return plot
+
+    def return_value_probability(self, column, value, decimals=1):
+        # Validate outcome paramter
+        ACCEPTABLE_COLUMNS = ["targeted_weapon_parts", "num_crystals_spent", "total_stamps_earned"]
+
+        if column not in ACCEPTABLE_COLUMNS:
+            print("ERROR: Only acceptable outcomes for this function are `targeted_weapon_parts`, `num_crystals_spent`, and `total_stamps_earned`.")
+            return
+
+        symbol = ">=" if column == "targeted_weapon_parts" else "<="
+
+        return round(100 * len(self.sim_results.query(column + f" {symbol} {value}")) / self.metadata["num_simulations"], decimals)
