@@ -1,0 +1,25 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ever_crisis_gacha_simulator"
+version = "0.1.0"
+authors = [
+    {name="Jace743", email="jacethegamer743@gmail.com"},
+]
+description = "Code to simulate and provide in-depth probability data on banner pulls in Final Fantasy VII: Ever Crisis."
+readme = "README.md"
+requires-python = ">=3.9.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/Jace743/ever-crisis-gacha-simulator"
+Issues = "https://github.com/Jace743/ever-crisis-gacha-simulator/issues"
+
+[tool.pytest.ini_options]
+pythonpath = "src"
