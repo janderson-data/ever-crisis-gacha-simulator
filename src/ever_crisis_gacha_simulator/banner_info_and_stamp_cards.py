@@ -4,6 +4,32 @@ from decimal import Decimal, getcontext
 getcontext().prec = 16  # Set Decimal to continue to a max of 16 decimal places
 
 
+ZACK_FF9_CROSSOVER_BANNER = {
+    "metadata": {
+        "name": "Zack FF9 Crossover Banner",
+        "characters": ["zack", "tifa", "cloud",],
+        "weapons": ["beatrix_sword_zack", "zidane_sword_cloud", "amarants_claws_tifa",],
+        "costumes": ["zidane_outfit_cloud", "amarants_guise_tifa",],
+        "non_featured_five_star_percent_rate": Decimal("0.00986"),
+        "end_date": "Sep 6, 2024",
+    },
+    "stamp_cards_list": {
+        "page_one": [
+            {"position": 3, "rule": "guaranteed_not_desired_five_star_draw"},
+            {"position": 6, "rule": "guaranteed_featured_five_star_draw"},
+        ],
+        "page_two": [
+            {"position": 3, "rule": "guaranteed_not_desired_five_star_draw"},
+            {"position": 6, "rule": "guaranteed_featured_five_star_draw"},
+            {"position": 8, "rule": "guaranteed_featured_five_star_draw"},
+        ],
+        "page_ex": [
+            {"position": 6, "rule": "guaranteed_four_star_draw"},
+            {"position": 12, "rule": "guaranteed_five_star_draw"},
+        ],
+    },
+}
+
 AERITH_LUCIA_EASTER_BANNER = {
     "metadata": {
         "name": "Aerith & Lucia -- Easter Banner",
