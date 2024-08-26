@@ -171,9 +171,9 @@ class GachaSim:
                 return f"Stamps Earned while Reaching Overboost {self.metadata['criterion_value']}"
         elif self.metadata["session_criterion"] == "crystals_spent":
             if outcome == "targeted_weapon_parts":
-                return f"Weapon Parts Earned after Spending {self.metadata['criterion_value']} Crystals"
+                return f"Weapon Parts Earned after Spending {self.metadata['criterion_value']:,} Crystals"
             elif outcome == "total_stamps_earned":
-                return f"Stamps Earned after Spending {self.metadata['criterion_value']} Crystals"
+                return f"Stamps Earned after Spending {self.metadata['criterion_value']:,} Crystals"
 
     def visualize_results(self, outcome, font_size=12):
         # Ensure user has already generated sim results

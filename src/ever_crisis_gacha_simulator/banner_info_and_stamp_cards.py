@@ -7,9 +7,9 @@ getcontext().prec = 16  # Set Decimal to continue to a max of 16 decimal places
 ZACK_FF9_CROSSOVER_BANNER = {
     "metadata": {
         "name": "Zack FF9 Crossover Banner",
-        "characters": ["zack", "tifa", "cloud",],
-        "weapons": ["beatrix_sword_zack", "zidane_sword_cloud", "amarants_claws_tifa",],
-        "costumes": ["zidane_outfit_cloud", "amarants_guise_tifa",],
+        "characters": ["zack"],
+        "weapons": ["beatrix_sword_zack"],
+        "costumes": ["zidane_outfit_cloud", "amarants_guise_tifa"],
         "non_featured_five_star_percent_rate": Decimal("0.00986"),
         "end_date": "Sep 6, 2024",
     },
